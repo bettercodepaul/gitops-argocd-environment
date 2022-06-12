@@ -1,0 +1,138 @@
+= Local Argo CD Test Environment
+
+.Key facts
+* Setup local Kubernetes with kind https://kind.sigs.k8s.io/
+* Argo CD https://argo-cd.readthedocs.io/en/stable/ to test GitOps project solutions
+* Use modified YAML files to install the ingress controller and Argo CD
+* Script to (re)deploy the complete Kubernetes cluster
+* Argo CD UI: http://localhost/argocd
+
+
+
+== Quick Start
+
+The `start.sh` script contains all commands to setup the test envrionment. 
+[source, bash]
+----
+sh ./start.sh
+----
+
+== Single Commands
+
+.Install kind
+[source, bash]
+----
+brew install kind 
+----
+
+.Start Kubernetes locally
+[source, bash]
+----
+kind create cluster --config kind-config.yaml
+----
+
+.Install Ingress Controller
+[source, bash]
+----
+kubectl apply -f install-ingress-nginx.yaml
+----
+
+.Install Argo CD
+[source, bash]
+----
+kubectl create namespace argocd
+
+kubectl apply -n argocd -f install-argocd.yaml
+
+kubectl apply -n argocd -f ingress.yaml
+----
+
+.Get default password
+[source, bash]
+----
+kubectl -n argocd get secret argocd-initial-admin-secret -o jsonpath="{.data.password}" | base64 -d; echo
+----
+
+.Stop Kubernetes
+[source, bash]
+----
+kind delete cluster  --name argo-cd
+----
+
+.All in one
+[source, bash]
+----
+kind delete cluster  --name argo-cd && \
+kind create cluster --config kind-config.yaml && \
+kubectl apply -f install-ingress-nginx.yaml && \
+kubectl wait -n ingress-nginx \
+  --for=condition=ready pod \
+  --selector=app.kubernetes.io/component=controller \
+  --timeout=90s && \
+kubectl create namespace argocd && \
+kubectl apply -n argocd -f install-argocd.yaml && \
+kubectl apply -n argocd -f ingress.yaml && \
+kubectl wait -n argocd \
+  --for=condition=ready pod \
+  --selector=app.kubernetes.io/name=argocd-server \
+  --timeout=90s && \
+echo ------------------- && \
+echo Initial Argo CD credentails: && \
+echo User: admin && \
+echo Password: $(kubectl -n argocd get secret argocd-initial-admin-secret -o jsonpath="{.data.password}" | base64 -d; echo) && \
+open http://localhost/argocd
+----
+
+
+
+== Patches
+
+Add `--insecure` and `--rootpath /argocd --basehref /argocd` flags to `argocd-server` command.
+
+.install-argocd.yaml
+[source, yaml]
+----
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  ...
+  name: argocd-server
+spec:
+  ...
+  template:
+    ...
+    spec:
+      ...
+      containers:
+      - command:
+        - argocd-server
+        - --insecure 
+        - --rootpath
+        - /argocd
+        - --basehref
+        - /argocd
+----
+
+
+Add `--enable-ssl-passthrough` flag to `/nginx-ingress-controller` command.
+
+.install-argocd.yaml
+[source, yaml]
+----
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: ingress-nginx-controller
+  ...
+spec:
+  ...
+  template:
+    ...
+    spec:
+      containers:
+      - args:
+        - /nginx-ingress-controller
+        - ...
+        - --enable-ssl-passthrough
+----
+
