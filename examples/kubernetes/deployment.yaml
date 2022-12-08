@@ -21,7 +21,7 @@ spec:
     spec:
       containers:
       - name: app-container
-        image: alehnert/argo-cd-application-repository:2022-12-08-570c305
+        image: alehnert/argo-cd-application-repository:2022-12-08-d13c981
         resources:
           requests:
             cpu: 300m
