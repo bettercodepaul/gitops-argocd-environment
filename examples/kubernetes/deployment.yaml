@@ -21,7 +21,7 @@ spec:
     spec:
       containers:
       - name: app-container
-        image: alehnert/gitops-evaluation-spring-boot-example:2022-03-14-5776beb
+        image: alehnert/argo-cd-application-repository:2022-12-08-570c305
         resources:
           requests:
             cpu: 300m
