@@ -29,7 +29,7 @@ metadata:
   namespace: argocd
 spec:
   destination:
-    name: 'PROD'
+    name: ''
     namespace: argocd-kubernetes
     server: 'https://kubernetes.default.svc'
   source:

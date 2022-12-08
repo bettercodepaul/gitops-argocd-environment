@@ -7,7 +7,7 @@ spec:
   - http:
       paths:
       - pathType: Prefix
-        path: "/plain-kubernetes"
+        path: "/kubernetes"
         backend:
           service:
             name: app-service
