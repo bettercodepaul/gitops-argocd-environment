@@ -1,0 +1,10 @@
+kind: Service
+apiVersion: v1
+metadata:
+  name: app-service
+spec:
+  selector:
+    service: app-service
+  type: ClusterIP
+  ports:
+  - port: 8083

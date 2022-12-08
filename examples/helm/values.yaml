@@ -1,0 +1,7 @@
+image: alehnert/argo-cd-application-repository
+tag: 2022-12-08-570c305
+name: helm
+
+namespace: ignore
+env: ignore
+path: ignore

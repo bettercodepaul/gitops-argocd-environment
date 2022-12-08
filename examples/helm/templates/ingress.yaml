@@ -1,0 +1,15 @@
+kind: Ingress
+apiVersion: networking.k8s.io/v1
+metadata:
+  name: app-ingress
+spec:
+  rules:
+  - http:
+      paths:
+      - pathType: Prefix
+        path: {{ .Values.path }}
+        backend:
+          service:
+            name: app-service
+            port:
+              number: 8083

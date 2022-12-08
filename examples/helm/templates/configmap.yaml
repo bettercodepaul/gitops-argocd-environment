@@ -1,0 +1,13 @@
+{{- $systemName := .Values.name -}}
+{{- $envFile := printf "env/env-%s.properties" .Values.env -}}
+apiVersion: v1
+kind: ConfigMap
+metadata:
+ name: settings
+data:
+ {{- $root := . -}}
+ {{ range $line := .Files.Lines $envFile }}
+ {{- if $line }}
+ {{ $line | regexFind "[0-9a-zA-Z_-]+" }}: "{{ $line | regexFind "=[\\S]+" | trimPrefix "=" }}"
+ {{- end }}
+ {{- end }}
