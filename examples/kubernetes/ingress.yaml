@@ -12,4 +12,4 @@ spec:
           service:
             name: app-service
             port:
-              number: 9090
+              number: 8083
