@@ -32,22 +32,9 @@ spec:
         ports:
         - name: http
           containerPort: 8083
-        env:
-        - name: ENVIRONMENT 
-          valueFrom:
-            configMapKeyRef:
+        envFrom:
+          - configMapRef:
               name: settings
-              key: ENVIRONMENT
-        - name: VERSION
-          valueFrom:
-            configMapKeyRef:
-              name: settings
-              key: VERSION
-        - name:   APP_PATH
-          valueFrom:
-            configMapKeyRef:
-              name: settings
-              key:   APP_PATH
         volumeMounts:
         - name: settings
           mountPath: "/config"
