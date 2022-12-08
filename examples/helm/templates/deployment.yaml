@@ -18,6 +18,8 @@ spec:
     metadata:
       labels:
         service: app-service
+      annotations:
+        rollme: {{ randAlphaNum 10 | quote }}
     spec:
       containers:
       - name: app-container
