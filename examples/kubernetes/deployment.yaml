@@ -1,0 +1,53 @@
+kind: Deployment
+apiVersion: apps/v1
+metadata:
+  name: app-deployment
+  labels:
+    service: app-service
+spec:
+  selector:
+    matchLabels:
+      service: app-service
+  replicas: 1
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxUnavailable: 50%
+      maxSurge: 50%
+  template:
+    metadata:
+      labels:
+        service: app-service
+    spec:
+      containers:
+      - name: app-container
+        image: alehnert/gitops-evaluation-spring-boot-example:2022-03-14-5776beb
+        resources:
+          requests:
+            cpu: 300m
+            memory: 500Mi
+          limits:
+            cpu: 1000m
+            memory: 700Mi
+        ports:
+        - name: http
+          containerPort: 8083
+        env:
+        - name: ENVIRONMENT 
+          valueFrom:
+            configMapKeyRef:
+              name: settings
+              key: ENVIRONMENT
+        - name: VERSION
+          valueFrom:
+            configMapKeyRef:
+              name: settings
+              key: VERSION
+        volumeMounts:
+        - name: settings
+          mountPath: "/config"
+          readOnly: true
+      volumes:
+      - name: settings
+        configMap:
+          name: settings
