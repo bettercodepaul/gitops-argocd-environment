@@ -5,3 +5,4 @@ metadata:
 data:
   ENVIRONMENT: PROD
   VERSION: 1.0.0
+  APP_PATH: kubernetes/api

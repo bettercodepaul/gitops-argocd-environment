@@ -43,6 +43,11 @@ spec:
             configMapKeyRef:
               name: settings
               key: VERSION
+        - name:   APP_PATH
+          valueFrom:
+            configMapKeyRef:
+              name: settings
+              key:   APP_PATH
         volumeMounts:
         - name: settings
           mountPath: "/config"
