@@ -36,6 +36,9 @@ spec:
     path: examples/helm/
     repoURL: 'https://github.com/bettercodepaul/gitops-argocd-environment.git'
     targetRevision: HEAD
+    helm:
+      valueFiles:
+        - values-dev.yaml
   project: helm-project
   syncPolicy:
     automated:

@@ -1,10 +1,11 @@
 {{- $systemName := .Values.name -}}
-{{- $envFile := printf "env/env-%s.properties" .Values.env -}}
+{{- $envFile := printf "env/env-%s.yaml" .Values.env -}}
 apiVersion: v1
 kind: ConfigMap
 metadata:
  name: settings
 data:
+ USED_ENV_FILE: {{ $envFile }}
  {{- $root := . -}}
  {{ range $line := .Files.Lines $envFile }}
  {{- if $line }}
