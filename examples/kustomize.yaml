@@ -33,7 +33,7 @@ spec:
     namespace: kustomize
     server: 'https://kubernetes.default.svc'
   source:
-    path: examples/kustomize/
+    path: examples/kustomize/env/dev
     repoURL: 'https://github.com/bettercodepaul/gitops-argocd-environment.git'
     targetRevision: HEAD
   project: kustomize-project
