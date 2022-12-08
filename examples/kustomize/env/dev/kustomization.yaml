@@ -1,0 +1,41 @@
+# Deployment targets
+namespace: kustomize
+namePrefix: dev-
+
+# Extend the ../../base .yaml files
+resources:
+- ./../../base
+- ingress.yaml
+
+# Current image version
+# Update with $ kustomize edit set image <name>=<newName>:<newTag>
+images:
+- name: alehnert/argo-cd-application-repository
+  newName: alehnert/argo-cd-application-repository
+  newTag: 2022-12-08-570c305
+
+# Create a ConfigMap based on the .env file
+# Final name: dev-settings referenced in the replacements section
+configMapGenerator:
+- behavior: create
+  envs:
+  - dev.env
+  name: settings
+  options:
+    disableNameSuffixHash: true
+
+# Replace the ConfigMap name manually
+# Kustomize can update the references automatically (if the file is in the same directory), 
+# but our deployment.yaml is not part of this directory
+replacements:
+- source:
+    kind: ConfigMap
+    name: dev-settings
+  targets:
+  - fieldPaths:
+    - spec.template.spec.volumes.[name=settings].configMap.name
+    select:
+      kind: Deployment
+      
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization

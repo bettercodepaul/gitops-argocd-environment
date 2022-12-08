@@ -20,7 +20,7 @@ spec:
     - group: '*'
       kind: '*'
   sourceRepos:
-    - 'https://github.com/lehnert-andre/argo-cd-gitops-repository'
+    - 'https://github.com/bettercodepaul/gitops-argocd-environment.git'
 ---
 apiVersion: argoproj.io/v1alpha1
 kind: Application
@@ -33,8 +33,8 @@ spec:
     namespace: kustomize
     server: 'https://kubernetes.default.svc'
   source:
-    path: kustomize/app/env/dev
-    repoURL: 'https://github.com/lehnert-andre/argo-cd-gitops-repository.git'
+    path: examples/kustomize/
+    repoURL: 'https://github.com/bettercodepaul/gitops-argocd-environment.git'
     targetRevision: HEAD
   project: kustomize-project
   syncPolicy:
