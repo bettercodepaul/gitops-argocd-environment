@@ -3,7 +3,7 @@ kind: ConfigMap
 metadata:
   name: settings
 data:
-  ENVIRONMENT: PROD
-  VERSION: 2.0.0
+  ENVIRONMENT: DEV
+  VERSION: 1.0.0
   APP_PATH: kubernetes/api
   EXAMPLE: kubernetes
