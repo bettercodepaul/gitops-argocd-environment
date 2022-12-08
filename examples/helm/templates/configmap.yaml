@@ -1,5 +1,5 @@
 {{- $systemName := .Values.name -}}
-{{- $envFile := printf "env/env-%s.yaml" .Values.env -}}
+{{- $envFile := printf "env/env-%s.properties" .Values.env -}}
 apiVersion: v1
 kind: ConfigMap
 metadata:

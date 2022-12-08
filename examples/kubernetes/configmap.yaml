@@ -6,3 +6,4 @@ data:
   ENVIRONMENT: PROD
   VERSION: 2.0.0
   APP_PATH: kubernetes/api
+  EXAMPLE: kubernetes
